@@ -16,10 +16,13 @@ public class Fight {
     public void fight() {
         if (attacker.getWeapon().getDamage() > defender.getWeapon().getDamage()) {
             winner = attacker;
+            defender.die();
         } else if (attacker.getWeapon().getDamage() == defender.getWeapon().getDamage()) {
             winner = attacker;
+            defender.die();
         } else {
             winner = defender;
+            attacker.die();
         }
     }
 

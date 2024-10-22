@@ -99,4 +99,89 @@ class SoldierTest {
         assertThat(fight.getWinner()).isEqualTo(soldier1);
     }
 
+    @Test
+    void army_addSoldier() {
+        Army army = new Army();
+        Soldier soldier = new Soldier("name");
+        army.addSoldier(soldier);
+        assertThat(army.getFrontMan()).isEqualTo(soldier);
+    }
+
+    @Test
+    void army_addSoldier_multipleSoldiers() {
+        Army army = new Army();
+        Soldier soldier1 = new Soldier("name1");
+        Soldier soldier2 = new Soldier("name2");
+        army.addSoldier(soldier1);
+        army.addSoldier(soldier2);
+        assertThat(army.getFrontMan()).isEqualTo(soldier1);
+    }
+
+    @Test
+    void army_addSoldier_emptyArmy() {
+        Army army = new Army();
+        assertThatThrownBy(army::getFrontMan)
+                .hasMessage("Army is empty")
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    void soldier_die() {
+        Soldier soldier = new Soldier("name");
+        soldier.die();
+        assertThat(soldier.isAlive()).isFalse();
+    }
+
+    @Test
+    void soldier_isAlive() {
+        Soldier soldier = new Soldier("name");
+        assertThat(soldier.isAlive()).isTrue();
+    }
+
+    @Test
+    void army_removeFrontMan() {
+        Army army = new Army();
+        Soldier soldier1 = new Soldier("name1");
+        Soldier soldier2 = new Soldier("name2");
+        army.addSoldier(soldier1);
+        army.addSoldier(soldier2);
+        army.removeFrontMan();
+        assertThat(army.getFrontMan()).isEqualTo(soldier2);
+    }
+
+    @Test
+    void war_fight() {
+        Army attackingArmy = new Army();
+        Soldier soldier1 = new Soldier("name1");
+        Soldier soldier2 = new Soldier("name2");
+        attackingArmy.addSoldier(soldier1);
+        attackingArmy.addSoldier(soldier2);
+        Army defendingArmy = new Army();
+        Soldier soldier3 = new Soldier("name3");
+        Soldier soldier4 = new Soldier("name4");
+        defendingArmy.addSoldier(soldier3);
+        defendingArmy.addSoldier(soldier4);
+        War war = new War(attackingArmy, defendingArmy);
+        war.fight();
+        assertThat(war.getWinner()).isEqualTo(attackingArmy);
+    }
+
+    @Test
+    void war_fightWithDifferentWeapons() {
+        Army attackingArmy = new Army();
+        Soldier soldier1 = new Soldier("name1");
+        Soldier soldier2 = new Soldier("name2");
+        attackingArmy.addSoldier(soldier1);
+        attackingArmy.addSoldier(soldier2);
+        Army defendingArmy = new Army();
+        Soldier soldier3 = new Soldier("name3");
+        Soldier soldier4 = new Soldier("name4");
+        soldier4.setWeapon(new Axe());
+        defendingArmy.addSoldier(soldier3);
+        defendingArmy.addSoldier(soldier4);
+        War war = new War(attackingArmy, defendingArmy);
+        war.fight();
+        assertThat(war.getWinner()).isEqualTo(defendingArmy);
+    }
+
 }
